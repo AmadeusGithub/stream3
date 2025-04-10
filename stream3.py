@@ -1,9 +1,9 @@
 import pandas as pd
- import matplotlib as plt
- import seaborn as sns
- import streamlit as st
- from streamlit_authenticator import Authenticate
- from streamlit_option_menu import option_menu
+import matplotlib as plt
+import seaborn as sns
+import streamlit as st
+from streamlit_authenticator import Authenticate
+from streamlit_option_menu import option_menu
  
  # Nos données utilisateurs doivent respecter ce format
  lesDonneesDesComptes = {
