@@ -5,34 +5,28 @@ import streamlit as st
 from streamlit_authenticator import Authenticate
 from streamlit_option_menu import option_menu
 
-# Nos données utilisateurs doivent respecter ce format
-lesDonneesDesComptes = {
+# Données des comptes (structure correcte pour streamlit-authenticator)
+credentials = {
     'usernames': {
         'utilisateur': {
             'name': 'utilisateur',
-            'password': 'utilisateurMDP',
-            'email': 'utilisateur@gmail.com',
-            'failed_login_attempts': 0,  # Sera géré automatiquement
-            'logged_in': False,          # Sera géré automatiquement
-            'role': 'utilisateur'
+            'password': 'utilisateurMDP',  # Mot de passe en clair (sera haché si nécessaire)
+            'email': 'utilisateur@gmail.com'
         },
         'root': {
             'name': 'root',
             'password': 'rootMDP',
-            'email': 'admin@gmail.com',
-            'failed_login_attempts': 0,  # Sera géré automatiquement
-            'logged_in': False,          # Sera géré automatiquement
-            'role': 'administrateur'
+            'email': 'admin@gmail.com'
         }
     }
 }
 
 # Initialisation de l'authentificateur
 authenticator = Authenticate(
-    lesDonneesDesComptes['usernames'],  # Passe directement le dictionnaire des utilisateurs
-    "cookie_name",                      # Nom du cookie
-    "cookie_key",                       # Clé du cookie
-    30                                  # Durée d'expiration (jours)
+    credentials,           # Passe le dictionnaire complet avec 'usernames'
+    "cookie_name",        # Nom du cookie
+    "cookie_key",         # Clé du cookie
+    30                    # Durée d'expiration (jours)
 )
 
 # Affichage du formulaire de connexion
@@ -43,24 +37,20 @@ def accueil():
     st.title("Bienvenu sur mon service de produits de soins naturels")
     st.image("https://th.bing.com/th/id/OIP.Sc73CNz3g0TnfaxljGQkBwHaEK?rs=1&pid=ImgDetMain")
 
-    # Sidebar
     with st.sidebar:
         if st.session_state["authentication_status"]:
             authenticator.logout("Déconnexion", "sidebar")
         
-        # Choix de l'envoi
         add_radio = st.radio(
             "Choose a shipping method",
             ("Standard (5-15 days)", "Express (2-5 days)")
         )
 
-        # Menu de sélection
         selection = option_menu(
             menu_title=None,
             options=["Soins chat", "Soins chien", "Soins catcheur"]
         )
 
-    # Affichage selon la sélection
     if selection == "Soins chat":
         st.header("Soins chat")
         st.image("https://static.streamlit.io/examples/cat.jpg")
